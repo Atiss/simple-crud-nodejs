@@ -62,6 +62,11 @@ class Database {
         this.users = this.users.filter(user => user.id !== id);
         this.saveData();
     }
+
+    clear() {
+        this.users = [];
+        this.saveData();
+    }
 }
 
 const db = new Database();
