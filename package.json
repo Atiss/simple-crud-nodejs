@@ -1,0 +1,20 @@
+{
+  "name": "crud",
+  "version": "1.0.0",
+  "description": "Course program module (for RS School students)\r Assignment: CRUD API\r Description\r Your task is to implement simple CRUD API using in-memory database underneath.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Atiss/simple-crud-nodejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Atiss/simple-crud-nodejs/issues"
+  },
+  "homepage": "https://github.com/Atiss/simple-crud-nodejs#readme"
+}
