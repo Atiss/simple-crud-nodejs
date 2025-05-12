@@ -1,20 +1,23 @@
 {
-  "name": "crud",
   "version": "1.0.0",
-  "description": "Course program module (for RS School students)\r Assignment: CRUD API\r Description\r Your task is to implement simple CRUD API using in-memory database underneath.",
-  "main": "index.js",
+  "description": "My webpack project",
+  "name": "webpack-project",
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:dev": "nodemon src/index.js",
+    "start:prod": "npm run build && node dist/index.js",
+    "build": "webpack --mode=production"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Atiss/simple-crud-nodejs.git"
+  "devDependencies": {
+    "dotenv": "^16.5.0",
+    "nodemon": "^3.1.10",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Atiss/simple-crud-nodejs/issues"
-  },
-  "homepage": "https://github.com/Atiss/simple-crud-nodejs#readme"
+  "dependencies": {
+    "uuid": "^11.1.0"
+  }
 }
