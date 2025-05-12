@@ -1,9 +1,10 @@
 import { v4, validate } from 'uuid';
-
-let users = [];
+import db from './db.js';
 
 export const requestListener = (req, res) => {
     const [_, api, resource, id] = req.url.split('/');
+
+    db.reloadData();
 
     if (api !== 'api' || resource !== 'users') {
         res.writeHead(404, {'Content-Type': 'application/json'});
@@ -12,7 +13,7 @@ export const requestListener = (req, res) => {
 
     if (req.method === 'GET' && !id) {
         res.writeHead(200, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify(users));
+        return res.end(JSON.stringify(db.getUsers()));
     }
 
     if (req.method === 'GET' && id) {
@@ -21,7 +22,7 @@ export const requestListener = (req, res) => {
             return res.end(JSON.stringify({error: 'Invalid UUID'}));
         }
 
-        const user = users.find(user => user.id === id);
+        const user = db.getUserById(id);
 
         if (!user) {
             res.writeHead(404, {'Content-Type': 'application/json'});
@@ -49,7 +50,7 @@ export const requestListener = (req, res) => {
                     age,
                     hobbies
                 };
-                users.push(newUser);
+                db.addUser(newUser);
                 res.writeHead(201, {'Content-Type': 'application/json'});
                 return res.end(JSON.stringify(newUser));
             } catch (err) {
@@ -77,17 +78,18 @@ export const requestListener = (req, res) => {
                     return res.end(JSON.stringify({error: 'Invalid request body'}));
                 }
 
-                const userIndex = users.findIndex(user => user.id === id);
+                const userIndex = db.findIndex(id);
 
                 if (userIndex === -1) {
                     res.writeHead(404, {'Content-Type': 'application/json'});
                     return res.end(JSON.stringify({error: 'User not found'}));
                 }
 
-                users[userIndex] = {id, username, age, hobbies};
+                const newUser = {id, username, age, hobbies};
+                db.updateUser(id, newUser);
 
                 res.writeHead(200, {'Content-Type': 'application/json'});
-                return res.end(JSON.stringify(users[userIndex]));
+                return res.end(JSON.stringify(newUser));
             } catch (err) {
                 res.writeHead(500, {'Content-Type': 'application/json'});
                 return res.end(JSON.stringify({error: 'Internal Server Error'}));
@@ -102,14 +104,14 @@ export const requestListener = (req, res) => {
             return res.end(JSON.stringify({error: 'Invalid UUID'}));
         }
 
-        const userIndex = users.findIndex(user => user.id === id);
+        const userIndex = db.findIndex(id);
 
         if (userIndex === -1) {
             res.writeHead(404, {'Content-Type': 'application/json'});
             return res.end(JSON.stringify({error: 'User not found'}));
         }
 
-        users.splice(userIndex, 1);
+        db.deleteUser(id);
 
         res.writeHead(204);
         return res.end();
